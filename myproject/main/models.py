@@ -15,3 +15,20 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        pass
+
+
+class Register:
+    name = models.CharField('Имя пользователя', max_length=100)
+    surname = models.CharField('Фамилия пользователя', max_length=100)
+    avatar = models.ImageField()
+    chatacter = models.TextField('Роль на платформе')
+    project = models.ImageField()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        pass
