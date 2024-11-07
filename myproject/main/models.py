@@ -8,8 +8,8 @@ class Task(models.Model):
     link_author = models.TextField('Автор')
     status = models.TextField('Статус')
     priority = models.TextField('Приоритет')
-    date_create = models.TextField('Дата создания')
-    date_update = models.TextField('Дата обновления')
+    date_create = models.DateTimeField('Дата создания', auto_now_add=True)
+    date_update = models.DateTimeField('Дата обновления', auto_now=True)
     period_execution = models.TextField('Срок выполнения')
     tester = models.TextField('Ответсвенный за тестировку')
 
@@ -17,14 +17,14 @@ class Task(models.Model):
         return self.title
 
     class Meta:
-        pass
+        verbose_name = 'Задача'
 
 
-class Register:
+class Register(models.Model):
     name = models.CharField('Имя пользователя', max_length=100)
     surname = models.CharField('Фамилия пользователя', max_length=100)
     avatar = models.ImageField()
-    chatacter = models.TextField('Роль на платформе')
+    character = models.TextField('Роль на платформе')
     project = models.ImageField()
 
     def __str__(self):
