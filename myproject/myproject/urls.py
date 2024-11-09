@@ -1,0 +1,13 @@
+from django.contrib import admin
+from django.urls import path
+from main import views
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.index, name='home'),
+    path('about/', views.about, name='about'),
+    path('api/v1/tasklist/', views.TaskAPIView.as_view(), name='tasklist'),
+    path('api/v2/reg/', views.RegisterAPIView.as_view(), name='tasks'),
+]
+
