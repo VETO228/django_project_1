@@ -29,10 +29,9 @@ class Register(models.Model):
     surname = models.CharField('Фамилия пользователя', max_length=100, blank=True, null=True)
     email = models.EmailField(max_length=100, unique=True)
     avatar = models.ImageField(
-        upload_to=get_path_upload_avatar,
         blank=True,
         null=True,
-        validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg', 'gif']), validate_size_image])
+    )
     character = models.CharField('Роль на платформе', max_length=100, blank=True, null=True)
     project = models.FileField(blank=True, null=True)
 
