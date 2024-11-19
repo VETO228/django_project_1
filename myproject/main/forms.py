@@ -1,4 +1,4 @@
-from models import Register, Task
+from models import Task
 from django import forms
 from django.core.files.images import get_image_dimensions
 
@@ -22,7 +22,7 @@ class TaskForm(forms.ModelForm):
 
 class RegisterForm(forms.ModelForm):
     class Meta:
-        model = Register
+        model = RegisterUser
     def clean_avatar(self):
         avatar = self.cleaned_data['avatar']
         try:

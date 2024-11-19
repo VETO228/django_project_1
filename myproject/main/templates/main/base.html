@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>{% block title%}{% endblock %}</title>
 </head>
-    <body>
-        {% block content %}{% endblock %}
-    </body>
+<body>
+    <header class="header">
+        <nav style="display: flex; list-style: none; text-decoration: none; gap: 20px">
+            <li><a href="/">Главная</a></li>
+            <li><a href="/about/">Профиль</a></li>
+            <li><a href="/api/v1/tasklist/">Лист заданий</a></li>
+            <li><a href="/api/v5/signup">Регистрация</a></li>
+            <li><a href="/api/v5/login">Вход</a></li>
+            <li><a href="/api/v5/logout">Выход</a></li>
+            <li><a href="/"></a></li>
+        </nav>
+    </header>
+    <div id="notifications" style="text-align: right;"></div>
+    <script>
+        const notificationsDiv = document.getElementById('notifications');
+        const socket = new WebSocket('ws://localhost:8000/ws/notifications/');
+
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            const message = data.message;
+
+            // Создание элемента уведомления
+            const notification = document.createElement('div');
+            notification.innerText = message;
+            notificationsDiv.appendChild(notification);
+        };
+
+        // Пример отправки сообщения на сервер
+        function sendNotification() {
+            const message = "Приозошло изменение!";
+            socket.send(JSON.stringify({ 'message': message }));
+        }
+
+        // Отправка уведомления через 5 секунд (для демонстрации)
+        setTimeout(sendNotification, 5000);
+    </script>
+    {% block content %}{% endblock %}
+</body>
 </html>
