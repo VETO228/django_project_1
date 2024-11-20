@@ -3,6 +3,7 @@ from django.template.context_processors import request
 from rest_framework import generics, status
 from rest_framework.decorators import api_view
 
+from .forms import UserRegistrationForm
 from .serializer import TaskSerializer, RegSerializer, ProjectSerializer, LogSerializer
 from .models import Task, RegisterUser
 from rest_framework.views import APIView
@@ -13,13 +14,24 @@ class Index:
     def index(request):
         return render(request, 'main/index.html')
 
+
 class About:
     def about(request):
         return render(request, 'main/about.html')
 
-class Regist:
-    def regist(request):
-        return render(request, 'main/register.html')
+
+class Register:
+    def register(request):
+        if request.method == 'POST':
+            user_form = UserRegistrationForm(request.POST)
+            if user_form.is_valid():
+                new_user = user_form.save(commit=False)
+                new_user.set_password(user_form.cleaned_data['password'])
+                new_user.save()
+                return render(request, 'main/register_done.html', {'new_user': new_user})
+        else:
+            user_form = UserRegistrationForm()
+        return render(request, 'main/register.html', {'user_form': user_form})
 
 
 class TaskAPIView(generics.ListCreateAPIView):
@@ -70,3 +82,4 @@ def log_out_user(request):
     request.user.auth_token.delete()
     return Response({"data": {"message": "log out successfully"}},
                     status=status.HTTP_200_OK)
+

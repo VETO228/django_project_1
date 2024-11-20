@@ -1,5 +1,5 @@
 """
-ASGI config for myproject project.
+ASGI config for TaskTracker project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -15,7 +15,7 @@ from django.core.asgi import get_asgi_application
 
 from main import routing
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TaskTracker.settings')
 
 application = ProtocolTypeRouter({
     'http': get_asgi_application(),

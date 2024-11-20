@@ -53,7 +53,7 @@ CORS_ORIGIN_WHITELIST = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-ROOT_URLCONF = 'myproject.urls'
+ROOT_URLCONF = 'TaskTracker.urls'
 
 TEMPLATES = [
     {
@@ -72,9 +72,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'myproject.wsgi.application'
+WSGI_APPLICATION = 'TaskTracker.wsgi.application'
 
-ASGI_APPLICATION = 'myproject.asgi.application'
+ASGI_APPLICATION = 'TaskTracker.asgi.application'
 
 
 # Database

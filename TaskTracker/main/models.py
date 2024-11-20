@@ -5,8 +5,6 @@ from django.db import models
 
 
 class RegisterUser(AbstractUser):
-    name = models.CharField('Имя пользователя', max_length=100, blank=True, null=True)
-    surname = models.CharField('Фамилия пользователя', max_length=100, blank=True, null=True)
     email = models.EmailField(max_length=100, unique=True)
     avatar = models.ImageField(
         upload_to='avatars/',
@@ -45,21 +43,21 @@ class Task(models.Model):
 class UserManagers(BaseUserManager):
     use_in_migrations = True
 
-    def _create_user(self, fio, email, password, **extra_fields):
+    def _create_user(self, username, email, password, **extra_fields):
         if not email:
             raise ValueError('Адрес электронной почты должен быть установлен')
         email = self.normalize_email(email)
-        user = self.model(fio=fio, email=email, **extra_fields)
+        user = self.model(username=username, email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, fio, email=None, password=None, **extra_fields):
+    def create_user(self, username, email=None, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
-        return self._create_user(fio, email, password, **extra_fields)
+        return self._create_user(username, email, password, **extra_fields)
 
-    def create_superuser(self, fio, email=None, password=None,
+    def create_superuser(self, username, email=None, password=None,
                          **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
@@ -69,7 +67,7 @@ class UserManagers(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        return self._create_user(fio, email, password, **extra_fields)
+        return self._create_user(username, email, password, **extra_fields)
 
 
     @property

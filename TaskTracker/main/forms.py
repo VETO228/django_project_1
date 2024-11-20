@@ -1,28 +1,21 @@
-from models import Task
+from .models import Task, RegisterUser
 from django import forms
 from django.core.files.images import get_image_dimensions
 
+class UserRegistrationForm(forms.ModelForm):
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput)
 
-class TaskForm(forms.ModelForm):
-    class Meta:
-        model = Task
-        fields = (
-            'title',
-            'task',
-            'link_proj',
-            'link_author',
-            'status',
-            'priority',
-            'date_create',
-            'date_update',
-            'period_execution',
-            'tester',
-        )
-
-
-class RegisterForm(forms.ModelForm):
     class Meta:
         model = RegisterUser
+        fields = ('email', 'username')
+
+    def clean_password2(self):
+        cd = self.cleaned_data
+        if cd['password'] != cd['password2']:
+            raise forms.ValidationError('Пароли не совпадают.')
+        return cd['password2']
+
     def clean_avatar(self):
         avatar = self.cleaned_data['avatar']
         try:
@@ -46,3 +39,10 @@ class RegisterForm(forms.ModelForm):
             """
             pass
         return avatar
+
+
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = '__all__'
+
