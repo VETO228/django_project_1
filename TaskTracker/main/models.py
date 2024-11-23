@@ -1,22 +1,22 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager, UserManager
-from django.core.validators import FileExtensionValidator
 from django.db import models
-
+from django.db.models import CharField
 
 
 class RegisterUser(AbstractUser):
+    username = None
+    surname = CharField('Фамилия пользователя', max_length=50)
     email = models.EmailField(max_length=100, unique=True)
     avatar = models.ImageField(
-        upload_to='avatars/',
+        upload_to='',
         blank=True,
         null=True,
     )
     character = models.CharField('Роль на платформе', max_length=100, blank=True, null=True)
-    project = models.FileField(blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     objects = UserManager()
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username', 'surname']
 
 
 class Task(models.Model):
@@ -36,9 +36,6 @@ class Task(models.Model):
     def __str__(self):
         return self.title
 
-    class Meta:
-        verbose_name = 'Задача'
-
 
 class UserManagers(BaseUserManager):
     use_in_migrations = True
@@ -52,12 +49,12 @@ class UserManagers(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_user(self, username, email=None, password=None, **extra_fields):
+    def create_user(self, username=None, email=None, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
         return self._create_user(username, email, password, **extra_fields)
 
-    def create_superuser(self, username, email=None, password=None,
+    def create_superuser(self, username=None, email=None, password=None,
                          **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
@@ -81,11 +78,6 @@ class UserManagers(BaseUserManager):
         return self.name
 
 
-    class Meta:
-        pass
-
-
-
 class Projects(models.Model):
     name = models.CharField('Название', max_length=100)
     description = models.TextField('Описание')
@@ -93,11 +85,14 @@ class Projects(models.Model):
     date_update = models.DateTimeField(auto_now=True)
     status = models.CharField('Статус', choices=[('Активен', 'Активен'), ('Архивирован', 'Архивирован')] ,max_length=100)
 
-
     def __str__(self):
         return self.name
 
 
-    class Meta:
-        pass
+class ProjectMember(models.Model):
+    project = models.ForeignKey(Projects, related_name='members', on_delete=models.CASCADE)
+    user = models.ForeignKey(RegisterUser, on_delete=models.CASCADE)
+    role = models.CharField(max_length=50)  # Например, "Участник", "Руководитель"
 
+    def __str__(self):
+        return f'{self.user.username} - {self.role} in {self.project.title}'

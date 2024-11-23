@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'djoser',
     'channels',
     'corsheaders',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -131,12 +132,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'main.RegisterUser'
 
+AVATAR_THUMB_FORMAT = 'PNG'
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'main.auth.Bearer'
+    ],
+
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
     ]
 }
 

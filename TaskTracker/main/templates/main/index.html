@@ -8,4 +8,10 @@
     <header class="info">
         <h1>Главная страница</h1>
     </header>
+    <div class="main">
+        {% for b in data %}
+        <a href="{{ b.book.url }}">{{ b.title }}</a>
+        <img src="{{ b.cover.url }}">
+        {% endfor %}
+    </div>
 {% endblock %}

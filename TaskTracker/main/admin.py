@@ -9,4 +9,4 @@ class TaskAdmin(admin.ModelAdmin):
 @admin.register(RegisterUser)
 class RegisterAdmin(admin.ModelAdmin):
     list_display = ('id', 'username', 'email',)
-    list_display_links = ('email',)
+    list_display_links = ('email', 'username')

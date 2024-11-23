@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import Task, RegisterUser, Projects
+from .models import Task, RegisterUser, Projects, ProjectMember
 
 
 class LogSerializer(serializers.Serializer):
@@ -24,15 +24,21 @@ class RegSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RegisterUser
-        fields = ['email', 'password', 'fio']
+        fields = ['email', 'username', 'surname']
 
     def save(self, **kwargs):
         user = RegisterUser()
+        user.username = self.validated_data['username']
+        user.surname = self.validated_data['surname']
         user.email = self.validated_data['email']
-        user.fio = self.validated_data['fio']
         user.set_password(self.validated_data['password'])
         user.save()
         return user
+
+
+class TokenSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+    access = serializers.CharField()
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -44,4 +50,10 @@ class TaskSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Projects
+        fields = '__all__'
+
+
+class ProjectMemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectMember
         fields = '__all__'
