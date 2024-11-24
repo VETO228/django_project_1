@@ -1,44 +1,75 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import Task, RegisterUser, Projects, ProjectMember
+from .models import Task, RegisterUser, Projects, TaskComment, ProjectsComment
 
 
-class LogSerializer(serializers.Serializer):
-    # Для авторизациии
-    email = serializers.CharField()
-    password = serializers.CharField()
-
-    def validate_user(self, attrs):
-        email = attrs.get('email')
-        password = attrs.get('password')
-        if email and password:
-            user = authenticate(request=self.context.get('request'),
-                                email=email, password=password)
-        attrs['user'] = user
-        return attrs
-
-
-class RegSerializer(serializers.ModelSerializer):
-    # для регистрации
-    password = serializers.CharField(min_length=12)
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+    token = serializers.CharField(max_length=255, read_only=True)
 
     class Meta:
         model = RegisterUser
-        fields = ['email', 'username', 'surname']
+        fields = ('username', 'surname', 'password', 'avatar', 'role', 'projects', 'token', 'email')
 
-    def save(self, **kwargs):
-        user = RegisterUser()
-        user.username = self.validated_data['username']
-        user.surname = self.validated_data['surname']
-        user.email = self.validated_data['email']
-        user.set_password(self.validated_data['password'])
+    def create(self, validated_data):
+        user = RegisterUser(**validated_data)
+        user.set_password(validated_data['password'])
         user.save()
         return user
 
 
-class TokenSerializer(serializers.Serializer):
-    refresh = serializers.CharField()
-    access = serializers.CharField()
+class LoginSerializer(serializers.Serializer):
+    email = serializers.CharField(max_length=255)
+    username = serializers.CharField(max_length=255, read_only=True)
+    password = serializers.CharField(max_length=128, write_only=True)
+    token = serializers.CharField(max_length=255, read_only=True)
+
+    def validate(self, data):
+        email = data.get('email', None)
+        password = data.get('password', None)
+        if email is None:
+            raise serializers.ValidationError(
+                'Поле почты не было заполено'
+            )
+
+        if password is None:
+            raise serializers.ValidationError(
+                'Поле пароля не было заполено'
+            )
+
+        user = authenticate(username=email, password=password)
+        if user is None:
+            raise serializers.ValidationError(
+                'Пользователь не определён'
+            )
+
+        return {
+            'email': user.email,
+            'username': user.username,
+            'token': user.token
+        }
+
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        max_length=128,
+        write_only=True
+    )
+
+    class Meta:
+        model = RegisterUser
+        fields = ('email', 'username', 'surname', 'password', 'token', 'avatar', 'role', 'projects',)
+        read_only_fields = ('token',)
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+
+        if password is not None:
+            instance.set_password(password)
+        instance.save()
+        return instance
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -46,14 +77,28 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = '__all__'
 
+    def create(self, validated_data):
+        task = Task(**validated_data)
+        task.save()
+        return task
+
+
+class TaskCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskComment
+        fields = ['user', 'content', 'created_at']
+
+class ProjectsCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectsComment
+        fields = ['user', 'content', 'created_at']
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Projects
         fields = '__all__'
 
-
-class ProjectMemberSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProjectMember
-        fields = '__all__'
+    def create(self, validated_data):
+        project = Projects(**validated_data)
+        project.save()
+        return project

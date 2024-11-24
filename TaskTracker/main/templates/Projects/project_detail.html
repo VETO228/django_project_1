@@ -1,0 +1,24 @@
+{% extends 'Projects/base.html' %}
+
+{% block title %}Проекты{% endblock %}
+
+{% block content %}
+<h1>{{ projects.title }}</h1>
+<p>Описание: {{ projects.description }}</p>
+<p>Статус: {{ projects.status }}</p>
+<p>Создано: {{ projects.date_create }}</p>
+<p>Обновлено: {{ projects.date_update }}</p>
+
+<h2>Комментарии</h2>
+<form method="post">
+    {% csrf_token %}
+    <label for="content">Описание:</label>
+    <textarea id="content" name="content" required></textarea><br>
+    <button type="submit">Добавить комментарий</button>
+</form>
+<ul>
+    {% for comment in project_comments %}
+        <li>{{ comment.content }} - {{ comment.user.username }} ({{ comment.created_at }})</li>
+    {% endfor %}
+</ul>
+{% endblock %}

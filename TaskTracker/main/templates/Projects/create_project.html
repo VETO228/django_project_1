@@ -1,0 +1,29 @@
+{% extends 'Projects/base.html' %}
+
+{% block title %}Создание проекта или редактирование проектов {% endblock %}
+
+{% block content %}
+<h1>{% if serializer.instance.pk %}Редактировать{% else %}Создать{% endif %} проект</h1>
+    <form method="post" action="{% url 'create_project' %}">
+        {% csrf_token %}
+        <label for="title">Название:</label>
+        <input type="text" id="title" name="title" required><br>
+
+        <label for="description">Описание:</label>
+        <textarea id="description" name="description" required></textarea><br>
+
+        <label for="status">Статус:</label>
+        <select id="status" name="status">
+            <option value="Активен">Активен</option>
+            <option value="Архивирован">Архивирован</option>
+        </select><br>
+
+        <label for="date_create">Дата создания:</label>
+        <input type="date" id="date_create" name="date_create" required><br>
+
+        <label for="date_update">Дата обновления:</label>
+        <input type="date" id="date_update" name="date_update" required><br>
+
+        <button type="submit">Добавить</button>
+    </form>
+{% endblock %}

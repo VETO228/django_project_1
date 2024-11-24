@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'djoser',
     'channels',
     'corsheaders',
-    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -134,12 +133,24 @@ AUTH_USER_MODEL = 'main.RegisterUser'
 
 AVATAR_THUMB_FORMAT = 'PNG'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'vadimyxll@gmail.com'
+EMAIL_HOST_PASSWORD = '64529110Tohka1004'
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'main.backends.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-        'main.auth.Bearer'
+        'main.auth.Bearer',
+    ],
+
+    'AUTHENTICATION_BACKENDS': [
+        'django.contrib.auth.backends.ModelBackend',
     ],
 
     'DEFAULT_FILTER_BACKENDS': [

@@ -1,0 +1,50 @@
+{% extends 'Tasks/base.html' %}
+
+{% block title %}Создание задач или редактрование задач{% endblock %}
+
+{% block content %}
+<h1>{% if serializer.instance.pk %}Редактировать{% else %}Создать{% endif %} задачу</h1>
+    <form method="post" action="{% url 'create_task' %}">
+        {% csrf_token %}
+        <label for="title">Название:</label>
+        <input type="text" id="title" name="title" required><br>
+
+        <label for="task">Описание:</label>
+        <textarea id="task" name="task" required></textarea><br>
+
+        <label for="link_proj">Проект(ссылка на проект):</label>
+        <input type="text" id="link_proj" name="link_proj" required><br>
+
+        <label for="link_author">Исполнитель(ссылка на пользователя):</label>
+        <input type="text" id="link_author" name="link_author" required><br>
+
+        <label for="status">Статус:</label>
+        <select id="status" name="status">
+            <option value="Grooming">Grooming</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Dev">Dev</option>
+            <option value="Done">Done</option>
+        </select><br>
+
+        <label for="priority">Приоритет:</label>
+        <select id="priority" name="priority">
+            <option value="Низкий">Низкий</option>
+            <option value="Средний">Средний</option>
+            <option value="Высокий">Высокий</option>
+        </select><br>
+
+        <label for="date_create">Дата создания:</label>
+        <input type="date" id="date_create" name="date_create" required><br>
+
+        <label for="date_update">Дата обновления:</label>
+        <input type="date" id="date_update" name="date_update" required><br>
+
+        <label for="period_execution">Срок выполнения:</label>
+        <input type="date" id="period_execution" name="period_execution" required><br>
+
+        <label for="tester">Ответственный за тестировку:</label>
+        <input type="text" id="tester" name="tester" required><br>
+
+        <button type="submit">Добавить</button>
+    </form>
+{% endblock %}

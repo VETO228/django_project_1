@@ -10,9 +10,10 @@ urlpatterns = [
 
     path('', views.Index.index, name='home'),
     path('about/', views.About.about, name='about'),
-    path('reg/', views.Register.register, name='register'),
-    path('login/', views.CustomTokenObtainPairView.as_view(), name='login'),
-    path('tasks/', views.task_list, name='task'),
+    path('login/', views.UserLoginView.as_view(), name='login'),
+    path('reg/', views.UserRegistrationView.as_view(), name='register'),
+    path('user/', views.UserRetrieveUpdateAPIView.as_view(), name='user'),
+    path('send_message/', views.send_email_view),
 
     path('api/v1/', include('main.urls')),
     path('api/v2/drf-auth/', include('rest_framework.urls')),

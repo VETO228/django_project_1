@@ -19,27 +19,20 @@
     </header>
     <div id="notifications" style="text-align: right;"></div>
     <script>
-        const notificationsDiv = document.getElementById('notifications');
         const socket = new WebSocket('ws://localhost:8000/ws/notifications/');
 
         socket.onmessage = function(event) {
             const data = JSON.parse(event.data);
-            const message = data.message;
-
-            // Создание элемента уведомления
-            const notification = document.createElement('div');
-            notification.innerText = message;
-            notificationsDiv.appendChild(notification);
+            alert(data.message); // Показываем уведомление
         };
 
-        // Пример отправки сообщения на сервер
-        function sendNotification() {
-            const message = "Приозошло изменение!";
-            socket.send(JSON.stringify({ 'message': message }));
-        }
+        socket.onopen = function(event) {
+            console.log('WebSocket connection established');
+        };
 
-        // Отправка уведомления через 5 секунд (для демонстрации)
-        setTimeout(sendNotification, 5000);
+        socket.onclose = function(event) {
+            console.log('WebSocket connection closed');
+        };
     </script>
     {% block content %}{% endblock %}
 </body>

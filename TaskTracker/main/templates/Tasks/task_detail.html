@@ -1,0 +1,28 @@
+{% extends 'Tasks/base.html' %}
+
+{% block title %}Задача{% endblock %}
+
+{% block content %}
+<h1>{{ task.title }}</h1>
+<p>Описание: {{ task.task }}</p>
+<p>Статус: {{ task.status }}</p>
+<p>Приоритет: {{ task.priority }}</p>
+<p>Автор: {{ task.link_author }}</p>
+<p>Создано: {{ task.date_create }}</p>
+<p>Обновлено: {{ task.date_update }}</p>
+<p>Срок выполнения: {{ task.period_execution }}</p>
+<p>Тестер: {{ task.tester}}</p>
+
+<h2>Комментарии</h2>
+<form method="post">
+    {% csrf_token %}
+    <label for="content">Описание:</label>
+    <textarea id="content" name="content" required></textarea><br>
+    <button type="submit">Добавить комментарий</button>
+</form>
+<ul>
+    {% for comment in task_comments %}
+        <li>{{ comment.content }} - {{ comment.user.username }} ({{ comment.created_at }})</li>
+    {% endfor %}
+</ul>
+{% endblock %}

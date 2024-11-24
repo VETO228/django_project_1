@@ -1,5 +1,8 @@
-login_data = {
-    'fio': 'user',
-    'email': 'user@mail.ru',
-    'password': '127986gfdgfdg',
+user = {
+    'username': 'testuser',
+    'password': 'testpass',
+    'email': 'testuser@example.com',
+    'surname': 'Test Surname',
+    'role': 'Developer',
+    'projects': 'Project 1, Project 2'
 }

@@ -1,0 +1,52 @@
+{% extends 'Tasks/base.html' %}
+{% load static %}
+
+{% block title %}Задачи{% endblock %}
+
+{% block content %}
+<form method="GET">
+    <h3>Фильтрация задач</h3>
+    <label>Дата создания от:</label>
+    <input type="date" name="created_after">
+    <label>Дата создания до:</label>
+    <input type="date" name="created_before"><br>
+
+    <label>Дата обновления от:</label>
+    <input type="date" name="updated_after">
+    <label>Дата обновления до:</label>
+    <input type="date" name="updated_before"><br>
+
+    <label>Срок выполнения от:</label>
+    <input type="date" name="due_after">
+    <label>Срок выполнения до:</label>
+    <input type="date" name="due_before"><br>
+
+    <button type="submit">Применить фильтры</button>
+</form>
+
+<h3>Сортировка задач</h3>
+<form method="GET">
+    <select name="sort_by">
+        <option value="">-- Выберите сортировку --</option>
+        <option value="created">По дате создания (от старых к новым)</option>
+        <option value="-created">По дате создания (от новых к старым)</option>
+        <option value="updated">По дате обновления (от старых к новым)</option>
+        <option value="-updated">По дате обновления (от новых к старым)</option>
+        <option value="title">По названию (от А до Я)</option>
+        <option value="-title">По названию (от Я до А)</option>
+    </select>
+    <button type="submit">Сортировать</button>
+</form>
+    {% for task in tasks%}
+        <li><p>Название: {{ task.title }}</p>
+            <p>Описание {{ task.task }}</p>
+            <p>Проект {{ task.link_proj }}</p>
+            <p>Автор {{ task.link_author }}</p>
+            <p>Статус {{ task.status }}</p>
+            <p>Приоритет {{ task.priority }}</p>
+            <p>Дата создания {{ task.date_create }}</p>
+            <p>Дата обновления {{ task.date_update }}</p>
+            <p>Срок выполнения {{ task.period_execution }}</p>
+            <p>Ответственный за тестировку {{ task.tester }}</li></p>
+    {% endfor %}
+{% endblock %}
