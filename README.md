@@ -28,7 +28,7 @@ TaskTracker представляет из себя упрощенною сист
 - drf_yasg (версия 1.21.8)
 
 ## Установка
-git clone https://github.com/VETO228/django_project_1.git
+git clone https://github.com/VETO228/django_project_1/tree/frei
 cd ./django_project_1/
 
 python -m venv venv
