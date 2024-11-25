@@ -52,10 +52,6 @@ DATABASE_URL= {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
-            'USER': os.environ.get('DJANGO_DB_USER', 'your_db_user'),
-            'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', 'your_db_password'),
-            'HOST': os.environ.get('DJANGO_DB_HOST', 'localhost'),
-            'PORT': os.environ.get('DJANGO_DB_PORT', '5432'),
         } 
     }
 

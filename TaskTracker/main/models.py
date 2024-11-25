@@ -8,6 +8,7 @@ class RegisterUser(AbstractUser):
     email = models.EmailField(unique=True)
     role = models.CharField(max_length=50, blank=True)
     projects = models.TextField(blank=True)
+    token = None
 
     def __str__(self):
         return self.username
