@@ -27,6 +27,10 @@ TaskTracker представляет из себя упрощенною сист
 - Djoser (версия 2.3.1)
 - drf_yasg (версия 1.21.8)
 - drf-spectacular (версия 0.27.2)
+- django-filter (версия 24.3)
+- docker (версия 7.1.0)
+- corsheaders (версия 4.6.0)
+- 
 
 ## Установка
 git clone https://github.com/VETO228/django_project_1/tree/frei
