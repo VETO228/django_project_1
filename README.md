@@ -26,6 +26,7 @@ TaskTracker представляет из себя упрощенною сист
 - Pillow (версия 11.0.0)
 - Djoser (версия 2.3.1)
 - drf_yasg (версия 1.21.8)
+- drf-spectacular (версия 0.27.2)
 
 ## Установка
 git clone https://github.com/VETO228/django_project_1/tree/frei
