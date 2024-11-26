@@ -45,8 +45,8 @@ class TaskComment(models.Model):
 class Projects(models.Model):
     title = models.CharField('Название', max_length=100)
     description = models.TextField('Описание')
-    date_create = models.DateTimeField('Дата создания', blank=True, null=True)
-    date_update = models.DateTimeField('Дата обновления', blank=True, null=True)
+    date_create = models.DateTimeField('Дата создания',auto_created=True, blank=True, null=True)
+    date_update = models.DateTimeField('Дата обновления', auto_now_add=True, blank=True, null=True)
     status = models.CharField('Статус', choices=[('Активен', 'Активен'), ('Архивирован', 'Архивирован')] ,max_length=100)
 
     def __str__(self):
