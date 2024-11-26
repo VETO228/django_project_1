@@ -8,20 +8,6 @@ class JWTAuthentication(authentication.BaseAuthentication):
     authentication_header_prefix = 'Token'
 
     def authenticate(self, request):
-        """
-        Метод authenticate вызывается каждый раз, независимо от того, требует
-        ли того эндпоинт аутентификации. 'authenticate' имеет два возможных
-        возвращаемых значения:
-            1) None - мы возвращаем None если не хотим аутентифицироваться.
-            Обычно это означает, что мы значем, что аутентификация не удастся.
-            Примером этого является, например, случай, когда токен не включен в
-            заголовок.
-            2) (user, token) - мы возвращаем комбинацию пользователь/токен
-            тогда, когда аутентификация пройдена успешно. Если ни один из
-            случаев не соблюден, это означает, что произошла ошибка, и мы
-            ничего не возвращаем. В таком случае мы просто вызовем исключение
-            AuthenticationFailed и позволим DRF сделать все остальное.
-        """
         request.user = None
         auth_header = authentication.get_authorization_header(request).split()
         auth_header_prefix = self.authentication_header_prefix.lower()
